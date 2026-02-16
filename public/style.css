@@ -1,0 +1,445 @@
+:root {
+    /* DARK MODE (DEFAULT) */
+    --bg-color: #000000;
+    --panel-bg: #0a0a0a;
+    --text-primary: #ffffff;
+    --text-secondary: #666666;
+    --border-color: #333333;
+    --accent-color: #ffffff;
+    --code-bg: #000000;
+    --grid-line: rgba(255, 255, 255, 0.05);
+    
+    --font-head: 'Space Grotesk', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+}
+
+/* LIGHT MODE OVERRIDES */
+body.light-mode {
+    --bg-color: #ffffff;
+    --panel-bg: #f4f4f4;
+    --text-primary: #000000;
+    --text-secondary: #888888;
+    --border-color: #cccccc;
+    --accent-color: #000000;
+    --code-bg: #ffffff;
+    --grid-line: rgba(0, 0, 0, 0.05);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-mono); /* Mono by default for that tech feel */
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+}
+
+/* BACKGROUND GRID EFFECT */
+.grid-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 20px;
+}
+
+/* HEADER */
+header { margin-bottom: 60px; }
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-bottom: 20px;
+}
+
+h1 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 3rem;
+    margin: 0;
+    line-height: 0.9;
+    letter-spacing: -2px;
+}
+
+.x-mark { font-style: italic; }
+
+.system-status {
+    display: block;
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    letter-spacing: 2px;
+}
+
+.header-line {
+    width: 100%;
+    height: 1px;
+    background: var(--border-color);
+    position: relative;
+}
+.header-line::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -2px;
+    width: 100px;
+    height: 5px;
+    background: var(--text-primary);
+}
+
+/* TOGGLE SWITCH */
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.toggle-label {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: transparent;
+    border: 1px solid var(--text-primary);
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: var(--text-primary);
+    transition: .4s;
+}
+
+input:checked + .slider:before { transform: translateX(26px); }
+
+/* EDITOR SECTION */
+.editor-section {
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    margin-bottom: 60px;
+}
+
+.panel-header {
+    border-bottom: 1px solid var(--border-color);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.panel-title {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.control-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--border-color);
+    margin-left: 5px;
+}
+
+#noteName, #noteCode {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    outline: none;
+    display: block;
+}
+
+#noteName {
+    font-size: 1.5rem;
+    padding: 20px;
+    border-bottom: 1px dashed var(--border-color);
+    font-family: var(--font-head);
+    font-weight: 700;
+}
+
+#noteCode {
+    padding: 20px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    min-height: 250px;
+    resize: vertical;
+}
+
+.buttons {
+    border-top: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+button {
+    background: transparent;
+    border: none;
+    padding: 20px;
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    transition: all 0.2s;
+}
+
+#clearBtn { border-right: 1px solid var(--border-color); color: var(--text-secondary); }
+#clearBtn:hover { background: var(--bg-color); color: var(--text-primary); }
+
+#saveBtn { background: var(--text-primary); color: var(--bg-color); font-weight: 700; }
+#saveBtn:hover { opacity: 0.9; }
+
+/* NOTES LIST */
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--text-primary);
+    padding-bottom: 10px;
+}
+
+.filter-container {
+    margin-bottom: 30px;
+}
+
+#searchNotes {
+    width: 100%;
+    padding: 15px;
+    background: transparent;
+    border: 1px dashed var(--border-color);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+#searchNotes:focus {
+    border-style: solid;
+    border-color: var(--text-primary);
+    background: var(--panel-bg);
+}
+
+.no-results {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    border: 1px dashed var(--border-color);
+}
+
+
+h2 {
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.note-card {
+    background: var(--bg-color);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.note-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--text-primary);
+}
+
+.note-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 2px;
+    background: var(--text-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+}
+
+.note-card:hover::before { transform: scaleX(1); }
+
+.note-header { margin-bottom: 15px; }
+
+.note-info h3 {
+    margin: 0 0 5px 0;
+    font-family: var(--font-head);
+    font-size: 1.2rem;
+}
+
+.note-info small {
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+}
+
+.note-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 15px;
+}
+
+.note-actions button {
+    padding: 5px 0;
+    font-size: 0.75rem;
+    flex: 1;
+    text-align: left;
+}
+
+.note-actions button:hover { text-decoration: underline; background: transparent; }
+
+/* Code Display in Cards */
+.code-display {
+    display: none;
+    margin-top: 15px;
+    border: 1px solid var(--border-color);
+    background: var(--panel-bg);
+    padding: 15px;
+    overflow-x: auto;
+}
+
+.code-display pre { margin: 0; }
+.code-display code { color: var(--text-primary); font-size: 0.8rem; }
+
+/* RESPONSIVE DESIGN - MOBILE & TABLET */
+@media screen and (max-width: 768px) {
+    .container {
+        padding: 30px 20px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    header {
+        margin-bottom: 30px;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .toggle-container {
+        width: 100%;
+        justify-content: flex-end;
+        align-self: flex-end;
+    }
+
+    h1 {
+        font-size: 2.5rem; /* Slightly smaller title */
+    }
+
+    /* Stack the buttons on mobile */
+    .buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    #saveBtn {
+        border-bottom: 1px solid var(--border-color);
+        order: 1;
+    }
+    
+    #clearBtn {
+        border-right: none;
+        order: 2;
+    }
+
+    .notes-grid {
+        /* Force single column layout on smaller tablets/phones for better readability */
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    #noteName {
+        font-size: 1.2rem;
+        padding: 15px;
+    }
+    
+    #noteCode {
+        padding: 15px;
+        font-size: 0.85rem; /* Ensure code doesn't overflow horizontally too fast */
+    }
+    
+    .note-actions {
+        flex-wrap: wrap;
+    }
+    
+    .note-actions button {
+        flex: 1 1 40%; /* Allow buttons to wrap if needed */
+        margin-bottom: 5px;
+    }
+}
+/* Image Upload Styles */
+.upload-wrapper { padding: 0 20px 20px; border-bottom: 1px solid var(--border-color); }
+.file-label { cursor: pointer; font-size: 0.8rem; color: var(--text-secondary); display: inline-block; margin-bottom: 10px; }
+.file-label:hover { color: var(--text-primary); }
+#noteFile { display: none; }
+#filePreviewContainer { margin-top: 10px; position: relative; display: inline-block; }
+#imagePreview { max-width: 200px; max-height: 200px; border: 1px solid var(--border-color); display: block; }
+#removeFileBtn { position: absolute; top: -10px; right: -10px; background: var(--bg-color); border: 1px solid var(--border-color); color: var(--text-primary); padding: 5px; font-size: 0.7rem; cursor: pointer; }
+.note-image { margin-bottom: 15px; }
+.note-image img { max-width: 100%; border: 1px solid var(--border-color); }
+
+.file-preview-box, .file-attachment { border: 1px solid var(--border-color); padding: 10px; display: inline-flex; align-items: center; gap: 10px; background: var(--panel-bg); }
+.file-icon { font-size: 1.5rem; }
+.file-info { display: flex; flex-direction: column; }
+.file-name { font-size: 0.9rem; font-family: var(--font-mono); }
+.file-type { font-size: 0.7rem; color: var(--text-secondary); }

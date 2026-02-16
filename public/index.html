@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeVaultX </title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="grid-overlay"></div>
+    
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="brand">
+                    <h1>CODEVAULT<span class="x-mark">X</span></h1>
+           
+                </div>
+                
+                <div class="toggle-container">
+                   
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="header-line"></div>
+        </header>
+
+        <section class="editor-section">
+            <div class="panel-header">
+                <span class="panel-title">// INPUT_STREAM</span>
+                <div class="panel-controls">
+                    <span class="control-dot"></span>
+                    <span class="control-dot"></span>
+                </div>
+            </div>
+            
+            <input type="hidden" id="noteId">
+            <div class="input-wrapper">
+                <input type="text" id="noteName" placeholder="ENTER_FILENAME..." required>
+            </div>
+            
+            <div class="upload-wrapper">
+                <label for="noteFile" class="file-label">[ UPLOAD FILE ] (MAX 10MB)</label>
+                <input type="file" id="noteFile">
+                <div id="filePreviewContainer" style="display: none;">
+                    <div id="fileDisplayArea"></div>
+                    <button type="button" id="removeFileBtn" onclick="removeFile()">[ X ]</button>
+                </div>
+            </div>
+            
+            <div class="code-wrapper">
+                <textarea id="noteCode" placeholder="/* AWAITING INPUT... */" rows="10" required></textarea>
+            </div>
+            
+            <div class="buttons">
+                <button id="clearBtn" onclick="clearForm()">[ RESET_FORM ]</button>
+                <button id="saveBtn" onclick="saveNote()">[ COMMIT_DATA ]</button>
+            </div>
+        </section>
+
+        <section class="notes-list-section">
+            <div class="section-title">
+                <h2>MEMORY_BANKS</h2>
+                <span class="count-badge" id="countBadge">00</span>
+            </div>
+            
+            <div class="filter-container">
+                <input type="text" id="searchNotes" placeholder="> SEARCH_QUERY..." oninput="filterNotes()">
+            </div>
+
+            <div id="notesList" class="notes-grid">
+                </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Load saved theme
+        if(localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            toggle.checked = true;
+        }
+
+        toggle.addEventListener('change', () => {
+            if(toggle.checked) {
+                body.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
